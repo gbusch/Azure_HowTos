@@ -1,0 +1,6 @@
+# To authenticate yourself, you need a Databricks API token.
+#  * insert the token below
+#  * rename the file to `.setToken`
+#  * run `source .setToken`
+
+export DATABRICKS_API_TOKEN=<your token>

@@ -1,0 +1,22 @@
+{
+    "context": "..",
+    "image": "datathirstltd/dbconnect:6.5.1", // the version needs to match the version of the Databricks cluster
+
+    "settings": {
+        "python.pythonPath": "/opt/conda/envs/dbconnect/bin/python",
+        "python.venvPath": "/opt/conda/envs/dbconnect/lib/python3.7/site-packages/pyspark/jars"
+    },
+
+    //  Optional command - could add your own environment.yml file here (you must keep --name the same)
+    "postCreateCommand": "conda env update --file environment.yml --name dbconnect",
+
+    "containerEnv": {
+        "DATABRICKS_ADDRESS": "<your databricks cluster address>",
+        "DATABRICKS_CLUSTER_ID": "<your cluster ID>",
+        "DATABRICKS_ORG_ID": "<your org ID>",
+        "DATABRICKS_PORT": "8787"
+    },
+    "extensions": [
+        "ms-python.python"
+    ]
+}
