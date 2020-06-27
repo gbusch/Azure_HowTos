@@ -4,7 +4,8 @@ Databricks offers ready-to-start Spark clusters with customized notebooks. For m
 However, for production code it is often more desirable to have an IDE and to produce code in classical packages instead of notebooks.
 This is especially the case when we want to properly modularize and test our software.
 
-This manual describes how to connect Virtual Studio Code to a Databricks cluster.
+This manual describes how to connect Virtual Studio Code to a Databricks cluster. 
+Thanks to the Docker container provided by Data Thirst Ltd. this has become much more convenient.
 
 ## Setup the cluster in Databricks
 
@@ -44,11 +45,8 @@ Create a working directory and open the folder in VS Code. Within, create a dire
     //  Optional command - could add your own environment.yml file here (you must keep --name the same)
     // "postCreateCommand": "conda env update --file environment.yml --name dbconnect",
 
-    // Rather than storing/committing your bearer token here we recommend using a local variable and passing thru "DATABRICKS_API_TOKEN": "${localEnv:DatabricksToken}",
-    // You can manually set these as environment variables if you prefer
     "containerEnv": {
         "DATABRICKS_ADDRESS": "<your databricks cluster address>",
-        "DATABRICKS_API_TOKEN": "<your API token>",
         "DATABRICKS_CLUSTER_ID": "<your cluster ID>",
         "DATABRICKS_ORG_ID": "<your org ID>",
         "DATABRICKS_PORT": "8787"
@@ -58,7 +56,6 @@ Create a working directory and open the folder in VS Code. Within, create a dire
     ]
 }
 ```
-Beware: Since this file contains secrets that would allow anyone to access your databricks cluster make sure that it does stay secret! For example it could be a smart move to immediately include it in a gitignore-file!
 
 If you want to specify your conda environment (for example to install more python libraries), you can include an `environment.yml` file and uncomment the line starting with "postCreateCommand". Here is an example for an environment definition (make sure the version of databricks-connect matches the cluster version):
 ```
@@ -79,6 +76,15 @@ dependencies:
 
 ## Start the development container and begin coding
 To start coding, click on the green symbol in the lower left corner of VS Code, then click on "Remote-Containers: Reopen in Containers". This will reopen the working directory inside the dbconnect Docker container. The first time it will take quite a while since the Docker container has to be downloaded.
+
+To authenticate yourself, you need to provide your access token. This can be done via environment variables.
+The preferred way would be to save the API key in a file such as `.setToken`:
+```
+export DATABRICKS_API_TOKEN=<your token>
+```
+Make sure to include this file in your .gitignore. With this token, everybody can access your cluster, it should therefore stay a secret!
+
+Each time you start developing, you have to export the environment variable by running: `source .setToken`.
 
 To check that everything works, run `databricks-connect test`. In case the Databricks cluster is not up, it will take a while to start.
 
